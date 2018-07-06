@@ -2,6 +2,7 @@ package com.example.anupo.comp304_003_assignment4;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -9,10 +10,13 @@ import java.util.Date;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DatabaseHelper";
-    public static final String DATABASE_NAME="ShoppingDB.db";
+    public static final String DATABASE_NAME="ShoppingDB";
     //DataBase Version
-    private static final int DATABASE_VERSION = 7;
-    public static final String tableName="Customer";
+    private static final int DATABASE_VERSION = 1;
+    public static String tableName;
+    private static String tableCreatorString;
+    //region oldCode
+    /*
     //Table Name
     private static String CUSTOMER_TABLE = "Customer";
     private static String ADMIN_TABLE = "Admin";
@@ -70,6 +74,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_ADMIN_PASSWORD + " TEXT,"
             + COLUMN_ADMIN_FNAME + " TEXT,"
             + COLUMN_ADMIN_LNAME + " TEXT"+ ")";
+            */
+    //endregion
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME,null,  DATABASE_VERSION);
@@ -78,18 +84,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_CUSTOMER_TABLE);
-        db.execSQL(CREATE_ADMIN_TABLE);
+        db.execSQL(tableCreatorString);
+       // db.execSQL(CREATE_ADMIN_TABLE);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-     db.execSQL("DROP TABLE IF EXISTS "+CUSTOMER_TABLE);
-     db.execSQL("DROP TABLE IF EXISTS "+ADMIN_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS "+tableName);
+     //db.execSQL("DROP TABLE IF EXISTS "+ADMIN_TABLE);
      onCreate(db);
     }
-
+    //region Old CURD
+    /*
     public boolean insertCustomerData(int id, String username, String password, String fName, String lName, String address, String pocalCode, String city)
     {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -137,5 +144,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         else {
             return true;
         }
+    }
+    */
+    //endregion
+    public void dbInitialize(String tableName, String tableCreatorString)
+    {
+        this.tableName=tableName;
+        this.tableCreatorString=tableCreatorString;
+    }
+    public boolean addRow(ContentValues values)throws Exception{
+        SQLiteDatabase db=this.getWritableDatabase();
+        long nr=db.insert(tableName,null,values);
+        db.close();
+        return nr>-1;
+    }
+    public Customer getCustomerById(Integer id, String fieldName)throws Exception{
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor cursor=db.rawQuery("select * from "+tableName+" where "+fieldName+"='"+id+"'",null);
+        Customer customer=new Customer();
+        if (cursor.moveToFirst()){
+            cursor.moveToFirst();
+            customer.setId(cursor.getInt(0));
+            customer.setUsername(cursor.getString(1));
+            customer.setPassword(cursor.getString(2));
+            cursor.close();
+        }else {customer=null;}
+        db.close();
+        return customer;
     }
 }

@@ -1,10 +1,13 @@
 package com.example.anupo.comp304_003_assignment4;
 
+import android.content.ContentValues;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class CustomerInfo extends AppCompatActivity {
@@ -12,55 +15,69 @@ public class CustomerInfo extends AppCompatActivity {
     EditText txtCustomerId,txtName,txtPassword, txtFirstName, txtLastName,txtAddress,txtPostalCode,txtCity;
     Button register; int id;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_info);
+        try {
+            shoppingDB = new DatabaseHelper(getApplicationContext());
+            //db.createDatabase(getApplicationContext());
+            shoppingDB.dbInitialize("Customer", "CREATE TABLE Customer (id INTEGER PRIMARY KEY ,username TEXT ," +
+                    "password TEXT,  fName TEXT,  lName TEXT,  address TEXT,  postalCode TEXT,  city TEXT);");
 
-        shoppingDB =new DatabaseHelper(this);
+        }catch(Exception e)
+        {
+            Log.d("Customer", e.getMessage()+"");
+        }
 
-        txtCustomerId=(EditText)findViewById(R.id.editCustomerID);
-        txtName=(EditText)findViewById(R.id.editUserName);
-        txtPassword=(EditText)findViewById(R.id.editPassword);
-        txtFirstName=(EditText)findViewById(R.id.editFName);
-        txtLastName=(EditText)findViewById(R.id.editLName);
-        txtAddress=(EditText)findViewById(R.id.editAddress);
-        txtPostalCode=(EditText)findViewById(R.id.editPostCode);
-        txtCity=(EditText)findViewById(R.id.editCity);
         register=(Button)findViewById(R.id.btnRegistrationCustomer);
-        /*//id=;
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //boolean isInserted=  shoppingDB.insertCustomerData()
-                boolean isInserted=  shoppingDB.insertCustomerData(Integer.parseInt(txtCustomerId.getText().toString()),txtName.getText().toString(),txtPassword.getText().toString(), txtFirstName.getText().toString(),txtLastName.getText().toString(),txtAddress.getText().toString(),txtPostalCode.getText().toString(),txtCity.getText().toString());
-                if(isInserted==true)
-                {
-                    Toast.makeText(CustomerInfo.this,"Data Inserted",Toast.LENGTH_LONG).show();
-
-                }
-                else
-                    {
-                    Toast.makeText(CustomerInfo.this,"Data Not Inserted",Toast.LENGTH_LONG).show();
-                }
-            }
-        });*/
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
-                /*shoppingDB.insertCustomerData(Integer.parseInt(txtCustomerId.getText().toString()),txtName.getText().toString(),txtPassword.getText().toString(), txtFirstName.getText().toString(),txtLastName.getText().toString(),txtAddress.getText().toString(),txtPostalCode.getText().toString(),txtCity.getText().toString());
-                Toast.makeText(CustomerInfo.this,"Data Inserted",Toast.LENGTH_LONG).show();
-                */
-                boolean isInserted=  shoppingDB.insertCustomerData(102,txtName.getText().toString(),txtPassword.getText().toString(), txtFirstName.getText().toString(),txtLastName.getText().toString(),txtAddress.getText().toString(),txtPostalCode.getText().toString(),txtCity.getText().toString());
-                if(isInserted==true)
-                {
-                    Toast.makeText(CustomerInfo.this,"Data Inserted",Toast.LENGTH_LONG).show();
 
+               String txtName,txtPassword, txtFirstName, txtLastName,txtAddress,txtPostalCode,txtCity;
+                int txtCustomerId=Integer.parseInt(((EditText)findViewById(R.id.editCustomerID)).getText().toString());
+                txtName=((EditText)findViewById(R.id.editUserName)).getText().toString();
+                txtPassword=((EditText)findViewById(R.id.editPassword)).getText().toString();
+                txtFirstName=((EditText)findViewById(R.id.editFName)).getText().toString();
+                txtLastName=((EditText)findViewById(R.id.editLName)).getText().toString();
+                txtAddress=((EditText)findViewById(R.id.editAddress)).getText().toString();
+                txtPostalCode=((EditText)findViewById(R.id.editPostCode)).getText().toString();
+                txtCity=((EditText)findViewById(R.id.editCity)).getText().toString();
+
+                DatabaseHelper db = new DatabaseHelper(getApplicationContext());
+                ContentValues values = new ContentValues();
+
+                values.put("id",txtCustomerId);;
+                values.put("username",txtName);
+                values.put("password",txtPassword);
+                String message="Success";
+
+                try {
+                    db.addRow(values);
+                    // finish();
+                    Log.d("success","Success");
+                    Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
                 }
-                else
+                catch (Exception e)
                 {
-                    Toast.makeText(CustomerInfo.this,"Data Not Inserted",Toast.LENGTH_LONG).show();
+                    Log.d("Customer",e.getMessage());
+                }
+
+            }
+        });
+        findViewById(R.id.view).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Customer customer = shoppingDB.getCustomerById(Integer.parseInt(((EditText)findViewById(R.id.editCustomerID)).getText().toString()), "id");
+
+                    ((TextView)findViewById(R.id.result)).setText(customer.username.toString()+" "+customer.password.toString());
+                }
+                catch(Exception e)
+                {
+                    Log.d("Customer",e.getMessage());
                 }
             }
         });
