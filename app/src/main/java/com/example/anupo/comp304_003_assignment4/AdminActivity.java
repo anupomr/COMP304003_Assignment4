@@ -6,12 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-public class OrderActivity extends AppCompatActivity {
-TextView headingText;
+public class AdminActivity extends AppCompatActivity {
+    TextView headingText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order);
+        setContentView(R.layout.activity_admin);
 
         headingText=(TextView)findViewById(R.id.headingOrder);
         displayInfo();
@@ -20,6 +20,6 @@ TextView headingText;
     public void displayInfo(){
         SharedPreferences sharePref=getSharedPreferences("loginInfo", Context.MODE_PRIVATE );
         String uName=sharePref.getString("userName","");
-        headingText.setText("Welcome "+uName);
+        headingText.setText("Welcome "+uName +" in Admin panel");
     }
 }

@@ -4,25 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OrderActivity"
+    tools:context=".AdminActivity"
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/headingOrder"
+        android:id="@+id/headingAdmin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         />
-    <Button
-        android:id="@+id/viewOrder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="View"/>
 
-    <TextView
-        android:id="@+id/showOrder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="View Customer Information"
-        />
 </LinearLayout>

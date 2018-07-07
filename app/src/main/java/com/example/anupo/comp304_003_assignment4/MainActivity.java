@@ -7,10 +7,13 @@ import android.view.View;
 import android.content.SharedPreferences;
 import android.content.Context;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
 DatabaseHelper shoppingDB;
+    EditText usernameInput;
     Button btnRegister,btnLogin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +34,8 @@ DatabaseHelper shoppingDB;
       btnLogin.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-
+              saveLoginInfo(v);
+            startActivity(new Intent(MainActivity.this,OrderActivity.class));
           }
       });
 
@@ -45,7 +49,12 @@ DatabaseHelper shoppingDB;
         // Save login info By Shared Preference
     public void saveLoginInfo(View view)
     {
-        SharedPreferences sha=getSharedPreferences("loginInfo", Context.MODE_PRIVATE );
+        SharedPreferences sharePref=getSharedPreferences("loginInfo", Context.MODE_PRIVATE );
+        SharedPreferences.Editor editor =sharePref.edit();
+        usernameInput=(EditText)findViewById(R.id.loginUserName);
+        editor.putString("userName",usernameInput.getText().toString());
+        editor.apply();
+        Toast.makeText(this,"Saved",Toast.LENGTH_LONG).show();
 
     }
 
