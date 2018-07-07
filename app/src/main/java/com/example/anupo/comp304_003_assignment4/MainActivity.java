@@ -8,18 +8,21 @@ import android.content.SharedPreferences;
 import android.content.Context;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
-DatabaseHelper shoppingDB;
+    DatabaseHelper shoppingDB;
     EditText usernameInput;
     Button btnRegister,btnLogin;
+
+    RadioButton customerRadioButton, adminRadioButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //shoppingDB=new DatabaseHelper(this);
+
 
         //Register new Customer
         btnRegister= (Button)findViewById(R.id.btnRegisterCustomer);
@@ -35,7 +38,12 @@ DatabaseHelper shoppingDB;
           @Override
           public void onClick(View v) {
               saveLoginInfo(v);
-            startActivity(new Intent(MainActivity.this,OrderActivity.class));
+              customerRadioButton=(RadioButton)findViewById(R.id.customerRadioButton);
+              adminRadioButton=(RadioButton)findViewById(R.id.adminRadioButton);
+              if(adminRadioButton.isChecked())
+              {startActivity(new Intent(MainActivity.this,AdminActivity.class));}
+              else{startActivity(new Intent(MainActivity.this,OrderActivity.class));}
+
           }
       });
 

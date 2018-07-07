@@ -13,7 +13,7 @@ public class AdminActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
-        headingText=(TextView)findViewById(R.id.headingOrder);
+        headingText=(TextView)findViewById(R.id.headingAdmin);
         displayInfo();
     }
     //Retrieve information by SharedPreferences

@@ -11,6 +11,17 @@
         android:id="@+id/headingAdmin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:hint="Heading"
         />
-
+    <TextView
+        android:id="@+id/showOrder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Customer Information"
+        />
+    <Button
+        android:id="@+id/viewOrder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View"/>
 </LinearLayout>
