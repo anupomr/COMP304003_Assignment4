@@ -15,6 +15,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     public static String tableName;
     private static String tableCreatorString;
+    private static String ADMIN_TABLE ;
+    private static String ORDER_TABLE ;
+    private static String ITEM_TABLE ;
     //region oldCode
     /*
     //Table Name
@@ -85,7 +88,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(tableCreatorString);
-       // db.execSQL(CREATE_ADMIN_TABLE);
+       // db.execSQL(ADMIN_TABLE);
 
     }
 
@@ -171,5 +174,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }else {customer=null;}
         db.close();
         return customer;
+    }
+    public Customer getCustomerByUserName(String username, String fieldName)throws Exception{
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor cursor=db.rawQuery("select * from "+tableName+" where "+fieldName+"='"+username+"'",null);
+        Customer customer=new Customer();
+        if (cursor.moveToFirst()){
+            cursor.moveToFirst();
+            customer.setId(cursor.getInt(0));
+            customer.setUsername(cursor.getString(1));
+            customer.setPassword(cursor.getString(2));
+            cursor.close();
+        }else {customer=null;}
+        db.close();
+        return customer;
+    }
+
+    public Admin getAdminById(Integer id, String fieldName)throws Exception{
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor cursor=db.rawQuery("select * from "+tableName+" where "+fieldName+"='"+id+"'",null);
+        Admin admin=new Admin();
+        if (cursor.moveToFirst()){
+            cursor.moveToFirst();
+            admin.setEmployeeId(cursor.getInt(0));
+            admin.setUserName(cursor.getString(1));
+            admin.setPassword(cursor.getString(2));
+
+            cursor.close();
+        }else {admin=null;}
+        db.close();
+        return admin;
     }
 }

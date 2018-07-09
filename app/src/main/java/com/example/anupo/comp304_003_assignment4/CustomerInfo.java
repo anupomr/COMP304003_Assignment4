@@ -13,19 +13,19 @@ import android.widget.Toast;
 public class CustomerInfo extends AppCompatActivity {
     DatabaseHelper shoppingDB;
     EditText txtCustomerId,txtName,txtPassword, txtFirstName, txtLastName,txtAddress,txtPostalCode,txtCity;
-    Button register; int id;
+    Button register; //int id;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_info);
-        try {
+        try
+        {
             shoppingDB = new DatabaseHelper(getApplicationContext());
-            //db.createDatabase(getApplicationContext());
             shoppingDB.dbInitialize("Customer", "CREATE TABLE Customer (id INTEGER PRIMARY KEY ,username TEXT ," +
                     "password TEXT,  fName TEXT,  lName TEXT,  address TEXT,  postalCode TEXT,  city TEXT);");
-
-        }catch(Exception e)
+        }
+        catch(Exception e)
         {
             Log.d("Customer", e.getMessage()+"");
         }

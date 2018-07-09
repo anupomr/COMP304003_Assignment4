@@ -20,6 +20,6 @@ TextView headingText;
     public void displayInfo(){
         SharedPreferences sharePref=getSharedPreferences("loginInfo", Context.MODE_PRIVATE );
         String uName=sharePref.getString("userName","");
-        headingText.setText("Welcome "+uName);
+        headingText.setText("Welcome "+uName.toUpperCase());
     }
 }
